@@ -1,0 +1,199 @@
+@import './tokens.css';
+
+/* --------------------------------------------------------------------------
+   Reset & page ground
+   -------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Set while a modal is open so the page behind it cannot scroll. */
+body.modal-open {
+  overflow: hidden;
+}
+
+img,
+svg {
+  max-width: 100%;
+  display: block;
+}
+
+/* Links carry their own hover styling per component — there is deliberately no
+   blanket `a:hover` rule here, so a global default can never win over one. */
+a {
+  color: var(--crimson);
+  text-underline-offset: 3px;
+}
+
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.92em;
+  padding: 1px 4px;
+  background: var(--ground-2);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--cobalt);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--crimson);
+  color: var(--ground);
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+/* Screen-reader-only text (skip link, icon-button labels) */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Shared layout helpers
+   -------------------------------------------------------------------------- */
+
+.page {
+  max-width: var(--page);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.kicker {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* --------------------------------------------------------------------------
+   Scroll reveal — an IntersectionObserver adds .in the first time an element
+   enters the viewport (see src/hooks/useReveal.ts).
+   -------------------------------------------------------------------------- */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.7s var(--ease),
+    transform 0.7s var(--ease);
+}
+
+[data-reveal].in {
+  opacity: 1;
+  transform: none;
+}
+
+/* --------------------------------------------------------------------------
+   Keyframes used across components
+   -------------------------------------------------------------------------- */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes wipe {
+  0% {
+    background-size: 0% 100%;
+    color: var(--ink);
+  }
+  34% {
+    color: var(--ground);
+  }
+  100% {
+    background-size: 100% 100%;
+    color: var(--ground);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Respect the visitor's motion preference. Everything still renders — it just
+   arrives in place rather than animating.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}

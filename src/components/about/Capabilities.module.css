@@ -1,0 +1,27 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  padding: 9px 14px;
+  font-size: 13px;
+  background: transparent;
+  transition:
+    background 0.22s,
+    color 0.22s,
+    transform 0.22s;
+}
+
+.tag:hover {
+  color: var(--ground);
+  background: var(--tag-ink);
+  transform: translateY(-2px);
+}

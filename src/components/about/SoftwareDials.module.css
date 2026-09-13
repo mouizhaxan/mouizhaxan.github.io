@@ -1,0 +1,61 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 26px 16px;
+}
+
+.dial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 11px;
+  text-align: center;
+  min-width: 0;
+}
+
+.ring {
+  position: relative;
+  width: 58px;
+  height: 58px;
+}
+
+.ring svg {
+  transform: rotate(-90deg);
+  display: block;
+}
+
+.level {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.name {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--ink-2);
+}
+
+.scale {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+@media (max-width: 460px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

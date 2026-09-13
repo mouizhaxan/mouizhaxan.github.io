@@ -1,0 +1,45 @@
+.section {
+  padding: var(--section-y) var(--gutter);
+  background: var(--ground-2);
+  color: var(--ink);
+  scroll-margin-top: 88px;
+}
+
+.inner {
+  max-width: var(--page);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(40px, 5vw, 64px);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+  gap: clamp(28px, 3.5vw, 56px);
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.heading {
+  font-size: clamp(34px, 4.2vw, 60px);
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  text-wrap: balance;
+  font-weight: 400;
+}
+
+.heading em {
+  color: var(--cobalt);
+}
+
+.blurb {
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--ink-2);
+  max-width: 440px;
+}

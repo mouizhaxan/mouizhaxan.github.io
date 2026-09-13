@@ -1,0 +1,38 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr));
+  gap: clamp(12px, 1.5vw, 20px);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+}
+
+.stat:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 4px 10px rgba(27, 26, 25, 0.07),
+    0 20px 40px rgba(27, 26, 25, 0.12);
+}
+
+.value {
+  font-size: clamp(30px, 3vw, 44px);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.label {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}

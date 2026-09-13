@@ -1,0 +1,46 @@
+/* ---------------------------------------------------------------------------
+   Design tokens — the Modernist palette from the original design canvas.
+   Change a colour here and it changes everywhere. The same four accents are
+   also exported from src/data/site.ts for the places that need them in JS.
+   --------------------------------------------------------------------------- */
+
+:root {
+  /* Ground & ink */
+  --ground: #fbfbfa;
+  --ground-2: #f4f4f3;
+  --ground-3: #f8f8f7;
+  --surface: #ffffff;
+  --ink: #1b1a19;
+  --ink-2: #4b4846;
+  --ink-3: #6b6866;
+  --rule: #e7e6e4;
+
+  /* Accents */
+  --crimson: #b42730;
+  --crimson-dark: #9e1f28;
+  --cobalt: #12436e;
+  --cobalt-dark: #0e3459;
+  --emerald: #12925f;
+  --emerald-dark: #0e7a4f;
+  --cork: #c69a6c;
+  --cork-dark: #7a552c;
+
+  /* Type */
+  --font: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Elevation — tuned to the light ground, as in the canvas */
+  --shadow-sm: 0 1px 3px rgba(27, 26, 25, 0.05), 0 10px 26px rgba(27, 26, 25, 0.07);
+  --shadow-md: 0 2px 6px rgba(27, 26, 25, 0.05), 0 16px 40px rgba(27, 26, 25, 0.08);
+  --shadow-lg: 0 2px 6px rgba(27, 26, 25, 0.06), 0 18px 44px rgba(27, 26, 25, 0.14);
+  --shadow-hover: 0 6px 14px rgba(27, 26, 25, 0.08), 0 22px 46px rgba(27, 26, 25, 0.14);
+  --shadow-modal: 0 24px 60px rgba(27, 26, 25, 0.3);
+
+  /* Layout */
+  --page: 1320px;
+  --gutter: clamp(20px, 4vw, 56px);
+  --section-y: clamp(64px, 8vw, 112px);
+  --grid-gap: clamp(12px, 1.5vw, 20px);
+
+  /* Motion */
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+}

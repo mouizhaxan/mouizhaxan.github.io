@@ -1,0 +1,48 @@
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(32px, 5vh, 56px);
+  padding: calc(96px + 6vh) var(--gutter) 72px;
+  max-width: var(--page);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.statement {
+  font-size: clamp(38px, 5.6vw, 92px);
+  letter-spacing: -0.035em;
+  line-height: 1.26;
+  font-weight: 400;
+  text-wrap: pretty;
+}
+
+/* One plain word, rising into place. */
+.word {
+  display: inline-block;
+  animation: rise 0.75s var(--ease) both;
+}
+
+.em {
+  font-style: italic;
+  color: var(--ink-3);
+}
+
+/* A highlighted phrase — the colour wipes in behind it left to right. */
+.mark {
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  padding: 0 0.16em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  animation: wipe 0.75s var(--ease) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mark {
+    background-size: 100% 100%;
+    color: var(--ground);
+  }
+}

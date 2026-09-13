@@ -1,0 +1,55 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr));
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  background: var(--surface);
+  color: var(--ink);
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+  transition:
+    transform 0.28s var(--ease),
+    box-shadow 0.28s;
+}
+
+.card:hover {
+  color: var(--ink);
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-hover);
+}
+
+.icon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  color: var(--ground);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.label {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.value {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}

@@ -1,0 +1,152 @@
+.card {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: min(820px, 88vw);
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 0;
+  padding: 0;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+  will-change: transform;
+}
+
+/* The card is a <button>, so everything inside it is a <span> — each one needs
+   its display spelled out. */
+.media {
+  display: block;
+  position: relative;
+  flex: 1;
+  background: #e6e4e1;
+  overflow: hidden;
+}
+
+.media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Placeholder cover: a diagonal wash in the project's own accent, with faint
+   ruling — the same look the design iterations used before real renders land. */
+.placeholder {
+  position: absolute;
+  inset: 0;
+}
+
+.placeholder::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.06) 0 2px,
+    transparent 2px 14px
+  );
+}
+
+.numeral {
+  display: block;
+  position: absolute;
+  left: 20px;
+  top: 10px;
+  font-size: clamp(56px, 9vw, 92px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  pointer-events: none;
+}
+
+.chips {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  gap: 6px;
+  pointer-events: none;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.chip {
+  padding: 5px 11px;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: rgba(251, 251, 250, 0.82);
+  backdrop-filter: blur(8px);
+  white-space: nowrap;
+}
+
+.bar {
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 9px 16px;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ground);
+  pointer-events: none;
+}
+
+.meta {
+  padding: 18px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  background: var(--surface);
+}
+
+.metaText {
+  display: block;
+  min-width: 0;
+}
+
+.title {
+  display: block;
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+}
+
+.tagline {
+  display: block;
+  font-size: 13px;
+  color: var(--ink-3);
+  font-style: italic;
+}
+
+.open {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  background: var(--ink);
+  color: var(--ground);
+  white-space: nowrap;
+}
+
+@media (max-width: 560px) {
+  .title {
+    font-size: 16px;
+  }
+
+  .meta {
+    padding: 14px 16px;
+  }
+
+  .open {
+    padding: 9px 11px;
+    letter-spacing: 0.08em;
+  }
+}

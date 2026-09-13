@@ -1,0 +1,47 @@
+.footer {
+  padding: 26px var(--gutter);
+  background: var(--ink);
+  color: var(--ground);
+}
+
+.inner {
+  max-width: var(--page);
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px 32px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}
+
+.made {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: rgba(251, 251, 250, 0.72);
+}
+
+.made svg {
+  color: var(--crimson);
+}
+
+.copy {
+  color: rgba(251, 251, 250, 0.5);
+}
+
+.links {
+  display: flex;
+  gap: 20px;
+}
+
+.link {
+  color: rgba(251, 251, 250, 0.72);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.link:hover {
+  color: var(--ground);
+}
