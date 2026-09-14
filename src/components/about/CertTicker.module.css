@@ -125,3 +125,14 @@
 .modalBody {
   margin: 0 26px 26px;
 }
+
+/* Declared locally: CSS modules rename animation names, so a global
+   @keyframes of the same name would never match. */
+@keyframes ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}

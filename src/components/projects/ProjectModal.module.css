@@ -16,11 +16,45 @@
   overflow-y: auto;
 }
 
-.kickerRow {
+/* Close on the left, actions on the right. Pinned to the top of whichever
+   pane scrolls, so both stay in view. */
+.toolbar {
+  position: sticky;
+  top: calc(-1 * clamp(22px, 2.4vw, 34px));
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: calc(-1 * clamp(22px, 2.4vw, 34px)) calc(-1 * clamp(22px, 2.4vw, 34px)) 0;
+  padding: clamp(22px, 2.4vw, 34px) clamp(22px, 2.4vw, 34px) 12px;
+  background: var(--surface);
+}
+
+.close {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  font-size: 15px;
+  cursor: pointer;
+  border: 0;
+  background: var(--ground-2);
+  color: var(--ink);
+  transition: background 0.2s;
+}
+
+.close:hover {
+  background: #e7e6e4;
+}
+
+.meta {
   display: flex;
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
+  margin-bottom: 6px;
 }
 
 .kind {
@@ -91,47 +125,34 @@
   font-weight: 600;
 }
 
-.nav {
+.actions {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: auto;
-  padding-top: 8px;
+  gap: 6px;
+  margin-left: auto;
 }
 
-.navButtons {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.navBtn {
-  padding: 12px 16px;
-  font-size: 12px;
+.action {
+  min-width: 40px;
+  height: 40px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
   font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
   cursor: pointer;
   border: 0;
-  transition:
-    transform 0.2s,
-    background 0.2s;
-}
-
-.navBtn:hover {
-  transform: translateY(-2px);
-}
-
-.navQuiet {
   background: var(--ground-2);
   color: var(--ink);
+  transition: background 0.2s;
 }
 
-.navQuiet:hover {
+.action:hover {
   background: #e7e6e4;
-}
-
-.navSolid {
-  background: var(--ink);
-  color: var(--ground);
+  color: var(--ink);
 }
 
 /* Right: the presentation boards ------------------------------------------ */
@@ -144,64 +165,11 @@
   padding: clamp(16px, 1.8vw, 26px);
 }
 
-.close {
-  position: absolute;
-  top: clamp(16px, 1.8vw, 26px);
-  right: clamp(16px, 1.8vw, 26px);
-  z-index: 2;
-  width: 44px;
-  height: 44px;
-  font-size: 16px;
-  cursor: pointer;
-  border: 0;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(8px);
-  color: var(--ink);
-  box-shadow: 0 2px 8px rgba(27, 26, 25, 0.12);
-  transition: background 0.2s;
-}
-
-.close:hover {
-  background: var(--surface);
-}
-
-/* The narrow-screen twin, shown at the top of the text pane instead. A fixed
-   button is unreliable here — the panel animates with a transform, which would
-   make `position: fixed` resolve against the panel rather than the viewport. */
-.closeMobile {
-  display: none;
-  width: 40px;
-  height: 40px;
-  flex: none;
-  margin-left: auto;
-  font-size: 15px;
-  cursor: pointer;
-  border: 0;
-  background: var(--ground-2);
-  color: var(--ink);
-  transition: background 0.2s;
-}
-
-.closeMobile:hover {
-  background: #e7e6e4;
-}
-
 .sheetStack {
   display: flex;
   flex-direction: column;
   gap: clamp(12px, 1.4vw, 20px);
   min-height: 100%;
-}
-
-.sheet {
-  flex: none;
-  width: 100%;
-  aspect-ratio: 297 / 210;
-  object-fit: contain;
-  background: var(--surface);
-  box-shadow:
-    0 2px 6px rgba(27, 26, 25, 0.06),
-    0 12px 30px rgba(27, 26, 25, 0.1);
 }
 
 .sheetEmpty {
@@ -264,18 +232,5 @@
   .info,
   .boards {
     overflow: visible;
-  }
-
-  .nav {
-    margin-top: 16px;
-  }
-
-  .close {
-    display: none;
-  }
-
-  .closeMobile {
-    display: grid;
-    place-items: center;
   }
 }

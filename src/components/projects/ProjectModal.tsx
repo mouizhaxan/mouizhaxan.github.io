@@ -1,18 +1,44 @@
+import { useState } from 'react'
 import type { Project } from '../../data/types'
-import { DownloadIcon } from '../ui/Icon'
+import { DownloadIcon, ShareIcon } from '../ui/Icon'
 import { Modal } from '../ui/Modal'
 import styles from './ProjectModal.module.css'
+import { ZoomableSheet } from './ZoomableSheet'
 
 interface Props {
   project: Project | undefined
   open: boolean
-  /** e.g. "02 / 03" */
-  counter: string
   onClose: () => void
-  onStep: (delta: number) => void
 }
 
-export function ProjectModal({ project, open, counter, onClose, onStep }: Props) {
+/** A link that opens straight into this project (see the hash handling in Projects). */
+export function projectLink(project: Project) {
+  return `${window.location.origin}${window.location.pathname}#project-${project.id}`
+}
+
+export function ProjectModal({ project, open, onClose }: Props) {
+  const [copied, setCopied] = useState(false)
+
+  // The native share sheet where there is one; otherwise copy the link.
+  const share = async (p: Project) => {
+    const url = projectLink(p)
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: p.title, text: p.tagline, url })
+      } catch {
+        // Dismissed — nothing to do.
+      }
+      return
+    }
+    try {
+      await navigator.clipboard.writeText(url)
+      setCopied(true)
+      window.setTimeout(() => setCopied(false), 2000)
+    } catch {
+      window.prompt('Copy this link', url)
+    }
+  }
+
   const facts = project
     ? [
         ['Location', project.location],
@@ -29,24 +55,44 @@ export function ProjectModal({ project, open, counter, onClose, onStep }: Props)
       {project && (
         <div className={styles.layout}>
           <div className={styles.info}>
-            <div className={styles.kickerRow}>
-              <span className={styles.kind} style={{ background: project.palette }}>
-                {project.tab === 'edu' ? 'Educational' : 'Professional'}
-              </span>
-              <span className={styles.programme}>
-                {project.programme} · {project.year}
-              </span>
-              <button
-                type="button"
-                className={styles.closeMobile}
-                onClick={onClose}
-                aria-label="Close"
-              >
+            <div className={styles.toolbar}>
+              <button type="button" className={styles.close} onClick={onClose} aria-label="Close">
                 ✕
               </button>
+
+              <div className={styles.actions}>
+                {project.pdf && (
+                  <a
+                    className={styles.action}
+                    href={project.pdf}
+                    download
+                    aria-label="Download PDF"
+                    title="Download PDF"
+                  >
+                    <DownloadIcon size={15} />
+                  </a>
+                )}
+                <button
+                  type="button"
+                  className={styles.action}
+                  onClick={() => share(project)}
+                  aria-label="Share project"
+                  title="Share"
+                >
+                  {copied ? 'Link copied' : <ShareIcon size={15} />}
+                </button>
+              </div>
             </div>
 
             <div className={styles.titleBlock}>
+              <div className={styles.meta}>
+                <span className={styles.kind} style={{ background: project.palette }}>
+                  {project.tab === 'edu' ? 'Educational' : 'Professional'}
+                </span>
+                <span className={styles.programme}>
+                  {project.programme} · {project.year}
+                </span>
+              </div>
               <h3 className={styles.title}>{project.title}</h3>
               <div className={styles.tagline}>{project.tagline}</div>
             </div>
@@ -61,42 +107,16 @@ export function ProjectModal({ project, open, counter, onClose, onStep }: Props)
                 </div>
               ))}
             </div>
-
-            <div className={styles.nav}>
-              <span className="kicker">{counter}</span>
-              <div className={styles.navButtons}>
-                <button
-                  type="button"
-                  className={`${styles.navBtn} ${styles.navQuiet}`}
-                  onClick={() => onStep(-1)}
-                >
-                  ← Previous
-                </button>
-                <button
-                  type="button"
-                  className={`${styles.navBtn} ${styles.navSolid}`}
-                  onClick={() => onStep(1)}
-                >
-                  Next →
-                </button>
-              </div>
-            </div>
           </div>
 
           <div className={styles.boards}>
-            <button type="button" className={styles.close} onClick={onClose} aria-label="Close">
-              ✕
-            </button>
-
             <div className={styles.sheetStack}>
               {project.sheets && project.sheets.length > 0 ? (
                 project.sheets.map((sheet, i) => (
-                  <img
+                  <ZoomableSheet
                     key={sheet}
-                    className={styles.sheet}
                     src={sheet}
                     alt={`${project.title} — board ${i + 1}`}
-                    loading="lazy"
                   />
                 ))
               ) : (

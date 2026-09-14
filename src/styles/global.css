@@ -126,52 +126,9 @@ p {
   transform: none;
 }
 
-/* --------------------------------------------------------------------------
-   Keyframes used across components
-   -------------------------------------------------------------------------- */
-
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@keyframes wipe {
-  0% {
-    background-size: 0% 100%;
-    color: var(--ink);
-  }
-  34% {
-    color: var(--ground);
-  }
-  100% {
-    background-size: 100% 100%;
-    color: var(--ground);
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes ticker {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
+/* Component keyframes (rise, wipe, fadeIn, ticker) live in the *.module.css
+   file that uses them. CSS modules rename animation names, so a global
+   @keyframes declared here would never match. */
 
 /* --------------------------------------------------------------------------
    Respect the visitor's motion preference. Everything still renders — it just

@@ -18,7 +18,11 @@ const TABS: Array<{ id: Tab; label: string }> = [
 ]
 
 export function Projects({ externalModalOpen = false }: Props) {
-  const [tab, setTab] = useState<Tab>('edu')
+  // A shared link (#project-<id>) opens straight into that project.
+  const [linked] = useState(() =>
+    allProjects.find((p) => window.location.hash === `#project-${p.id}`),
+  )
+  const [tab, setTab] = useState<Tab>(linked?.tab ?? 'edu')
   const [modalOpen, setModalOpen] = useState(false)
   const [hovering, setHovering] = useState(false)
   const reduced = usePrefersReducedMotion()
@@ -31,6 +35,15 @@ export function Projects({ externalModalOpen = false }: Props) {
     intervalMs: carousel.intervalMs,
     paused: hovering || modalOpen || externalModalOpen,
   })
+
+  useEffect(() => {
+    if (!linked) return
+    goTo(list.indexOf(linked))
+    setModalOpen(true)
+    document.getElementById('projects')?.scrollIntoView()
+    // Runs once, on arrival from a shared link.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // Arrow keys drive the carousel while no modal is open. (The modal handles
   // its own keys, and Escape is owned by Modal.)
@@ -52,8 +65,6 @@ export function Projects({ externalModalOpen = false }: Props) {
     setTab(next)
     goTo(0)
   }
-
-  const counter = `${String(index + 1).padStart(2, '0')} / ${String(list.length).padStart(2, '0')}`
 
   return (
     <section id="projects" className={styles.section}>
@@ -87,9 +98,7 @@ export function Projects({ externalModalOpen = false }: Props) {
       <ProjectModal
         project={list[index]}
         open={modalOpen}
-        counter={counter}
         onClose={() => setModalOpen(false)}
-        onStep={step}
       />
     </section>
   )

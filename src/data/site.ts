@@ -274,8 +274,12 @@ export const projects: Project[] = [
     status: 'Conceptual',
     description:
       'A rhythmic intervention in Baku’s White City that translates Azerbaijan’s energy history into a vertical architectural language — its stratified façade bridging industrial past and sustainable future.',
-    cover: '',
-    sheets: [],
+    cover: '/projects/museum/cover.jpg',
+    sheets: Array.from(
+      { length: 20 },
+      (_, i) => `/projects/museum/board-${String(i + 1).padStart(2, '0')}.jpg`,
+    ),
+    pdf: '/projects/01_Museum.pdf',
   },
   {
     id: 'school',

@@ -32,6 +32,18 @@ export function DownloadIcon({ size = 13, className }: IconProps) {
   )
 }
 
+export function ShareIcon({ size = 13, className }: IconProps) {
+  return (
+    <svg {...stroke(size)} className={className}>
+      <circle cx="18" cy="5" r="3" />
+      <circle cx="6" cy="12" r="3" />
+      <circle cx="18" cy="19" r="3" />
+      <path d="m8.59 13.51 6.83 3.98" />
+      <path d="m15.41 6.51-6.82 3.98" />
+    </svg>
+  )
+}
+
 export function ExternalIcon({ size = 13, className }: IconProps) {
   return (
     <svg {...stroke(size)} strokeWidth={2.1} className={className}>
@@ -57,6 +69,38 @@ export function CloseIcon({ size = 16, className }: IconProps) {
     <svg {...stroke(size)} className={className}>
       <path d="M18 6 6 18" />
       <path d="m6 6 12 12" />
+    </svg>
+  )
+}
+
+export function ZoomInIcon({ size = 18, className }: IconProps) {
+  return (
+    <svg {...stroke(size)} className={className}>
+      <circle cx="11" cy="11" r="8" />
+      <path d="m21 21-4.35-4.35" />
+      <path d="M11 8v6" />
+      <path d="M8 11h6" />
+    </svg>
+  )
+}
+
+export function ZoomOutIcon({ size = 18, className }: IconProps) {
+  return (
+    <svg {...stroke(size)} className={className}>
+      <circle cx="11" cy="11" r="8" />
+      <path d="m21 21-4.35-4.35" />
+      <path d="M8 11h6" />
+    </svg>
+  )
+}
+
+export function FitIcon({ size = 18, className }: IconProps) {
+  return (
+    <svg {...stroke(size)} className={className}>
+      <path d="M8 3H5a2 2 0 0 0-2 2v3" />
+      <path d="M21 8V5a2 2 0 0 0-2-2h-3" />
+      <path d="M3 16v3a2 2 0 0 0 2 2h3" />
+      <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
     </svg>
   )
 }

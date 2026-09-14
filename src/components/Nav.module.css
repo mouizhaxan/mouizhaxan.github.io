@@ -189,3 +189,16 @@
     display: grid;
   }
 }
+
+/* Declared locally: CSS modules rename animation names, so a global
+   @keyframes of the same name would never match. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
