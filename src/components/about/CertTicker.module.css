@@ -2,6 +2,15 @@
   overflow: hidden;
   margin: 0 calc(-1 * var(--gutter));
   padding: 12px 0;
+  cursor: grab;
+  /* Horizontal swipes drag the row; vertical ones still scroll the page. */
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.dragging,
+.dragging .card {
+  cursor: grabbing;
 }
 
 .track {
@@ -9,7 +18,7 @@
   gap: 20px;
   width: max-content;
   padding: 0 var(--gutter);
-  animation: ticker 40s linear infinite;
+  will-change: transform;
 }
 
 .card {
@@ -22,7 +31,7 @@
   background: var(--surface);
   border: 0;
   padding: 0;
-  cursor: pointer;
+  cursor: grab;
   box-shadow: var(--shadow-sm);
   transition:
     transform 0.3s,
@@ -124,15 +133,4 @@
 
 .modalBody {
   margin: 0 26px 26px;
-}
-
-/* Declared locally: CSS modules rename animation names, so a global
-   @keyframes of the same name would never match. */
-@keyframes ticker {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
 }

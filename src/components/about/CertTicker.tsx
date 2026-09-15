@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState, type MouseEvent, type PointerEvent } from 'react'
 import { certificates } from '../../data/site'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
 import { MediaFrame } from '../ui/MediaFrame'
@@ -9,15 +9,93 @@ interface Props {
   onOpenChange?: (open: boolean) => void
 }
 
+/** Seconds for one full lap of the list. */
+const LAP_SECONDS = 40
+/** Pixels a press must travel before it counts as a drag rather than a click. */
+const DRAG_THRESHOLD = 5
+
 /**
- * An endlessly scrolling row of certificates. The list is rendered twice so the
- * track can translate exactly -50% and loop seamlessly; the second copy is
- * hidden from assistive tech.
+ * An endlessly scrolling row of certificates that can also be dragged with the
+ * mouse or a finger. The list is rendered twice so the offset can wrap by one
+ * copy's width and loop seamlessly; the second copy is hidden from assistive tech.
  */
 export function CertTicker({ onOpenChange }: Props) {
   const [openId, setOpenId] = useState<string | null>(null)
-  const [paused, setPaused] = useState(false)
+  const [hovered, setHovered] = useState(false)
+  const [dragging, setDragging] = useState(false)
   const reduced = usePrefersReducedMotion()
+
+  const trackRef = useRef<HTMLDivElement>(null)
+  const offset = useRef(0)
+  const press = useRef<{ id: number; startX: number; startOffset: number } | null>(null)
+  const moved = useRef(false)
+  const running = useRef(false)
+
+  running.current = !hovered && !dragging && !reduced && openId === null
+
+  // Drives the scroll and applies every offset change, including drags.
+  useEffect(() => {
+    const track = trackRef.current
+    if (!track) return
+
+    let frame = 0
+    let last = performance.now()
+
+    const tick = (now: number) => {
+      const dt = Math.min(0.1, (now - last) / 1000)
+      last = now
+
+      // One copy's width: from the first card to the first card of the duplicate.
+      const cards = track.children as HTMLCollectionOf<HTMLElement>
+      const lap = cards[certificates.length]
+        ? cards[certificates.length].offsetLeft - cards[0].offsetLeft
+        : 0
+
+      if (lap > 0) {
+        if (running.current) offset.current -= (lap / LAP_SECONDS) * dt
+        offset.current %= lap
+        if (offset.current > 0) offset.current -= lap
+        track.style.transform = `translateX(${offset.current}px)`
+      }
+      frame = requestAnimationFrame(tick)
+    }
+
+    frame = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(frame)
+  }, [])
+
+  const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return
+    press.current = { id: e.pointerId, startX: e.clientX, startOffset: offset.current }
+    moved.current = false
+  }
+
+  const onPointerMove = (e: PointerEvent<HTMLDivElement>) => {
+    const p = press.current
+    if (!p || p.id !== e.pointerId) return
+    const dx = e.clientX - p.startX
+    if (!moved.current) {
+      if (Math.abs(dx) < DRAG_THRESHOLD) return
+      moved.current = true
+      e.currentTarget.setPointerCapture(e.pointerId)
+      setDragging(true)
+    }
+    offset.current = p.startOffset + dx
+  }
+
+  const onPointerEnd = (e: PointerEvent<HTMLDivElement>) => {
+    if (press.current?.id !== e.pointerId) return
+    press.current = null
+    setDragging(false)
+  }
+
+  // A drag that ends over a card must not open it.
+  const onClickCapture = (e: MouseEvent<HTMLDivElement>) => {
+    if (!moved.current) return
+    e.preventDefault()
+    e.stopPropagation()
+    moved.current = false
+  }
 
   const open = certificates.find((c) => c.id === openId)
 
@@ -36,14 +114,16 @@ export function CertTicker({ onOpenChange }: Props) {
   return (
     <>
       <div
-        className={styles.viewport}
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
+        className={`${styles.viewport} ${dragging ? styles.dragging : ''}`}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerEnd}
+        onPointerCancel={onPointerEnd}
+        onClickCapture={onClickCapture}
       >
-        <div
-          className={styles.track}
-          style={{ animationPlayState: paused || reduced ? 'paused' : 'running' }}
-        >
+        <div ref={trackRef} className={styles.track}>
           {loop.map((cert, i) => {
             const duplicate = i >= certificates.length
             return (
@@ -52,14 +132,14 @@ export function CertTicker({ onOpenChange }: Props) {
                 type="button"
                 className={styles.card}
                 onClick={() => show(cert.id)}
-                onFocus={() => setPaused(true)}
-                onBlur={() => setPaused(false)}
+                onFocus={() => setHovered(true)}
+                onBlur={() => setHovered(false)}
                 tabIndex={duplicate ? -1 : 0}
                 aria-hidden={duplicate || undefined}
               >
                 <span className={styles.thumb}>
                   {cert.src ? (
-                    <img src={cert.src} alt="" loading="lazy" />
+                    <img src={cert.src} alt="" loading="lazy" draggable={false} />
                   ) : (
                     <span className={styles.thumbLabel}>Certificate</span>
                   )}
